@@ -2,9 +2,13 @@ from django.db import models
 from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator
 from .enumerations import TipoProjeto, Status, LinguagemProgramacao
 from django.core.exceptions import ValidationError
+from .managers.projeto_manager import ProjetoManager
+from .managers.tarefa_manager import Tarefa_manager
 # Create your models here.
 
 class Projeto(models.Model):
+    objects = ProjetoManager()
+
     nome = models.CharField(
         max_length=100,
         validators=[MinLengthValidator(5)]
@@ -67,6 +71,8 @@ class Projeto(models.Model):
         return f"{self.cliente} - {self.nome} - {self.tipo_projeto} - {self.orcamento} - {inicio} - {previsao}"
 
 class Tarefa(models.Model):
+    objects = Tarefa_manager()
+
     projeto = models.ForeignKey(
         Projeto,
         on_delete=models.CASCADE,
